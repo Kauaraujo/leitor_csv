@@ -1,34 +1,32 @@
 from csv import reader
 import math
+from typing import List
 from time import sleep
 from Models.pessoa import Pessoa
-from typing import List
-
-
-#/home/kaue/PraticaPython/dados.csv
+import time
 
 
 registros = []  # cria uma lista vazia para armazenar os registros
-feminino = 0 #Lista para guardar quantidade so sexo feminino
-masculino = 0 #lista para guardar quantidade de masculino
-idades = [] #lista para guardar as idades
-alturas = [] #lista para guardar as alturas
+feminino = 0  # Lista para guardar quantidade so sexo feminino
+masculino = 0  # Lista para guardar quantidade de masculino
+idades = []  # Lista para guardar as idades
+alturas = []  # Lista para guardar as alturas
 
 pessoas: List[Pessoa] = []
 
-caminho_arquivo = input('Informe o caminho do arquivo que deseja ler os dados:')
+caminho_arquivo = input('Informe o caminho do arquivo que deseja ler os dados: ')
 
 with open(caminho_arquivo) as arquivo:
     leitor = reader(arquivo)
     cabecalho = next(leitor)  # Lê e guarda o cabeçalho
     
     for linha in leitor:
-            nome = linha[0]
-            sexo = linha[1]
-            idade = int(linha[2])
-            altura = int(linha[3])
-            pessoa = Pessoa(nome, sexo, idade, altura)
-            pessoas.append(pessoa)
+        nome = linha[0]
+        sexo = linha[1]
+        idade = int(linha[2])
+        altura = int(linha[3])
+        pessoa = Pessoa(nome, sexo, idade, altura)
+        pessoas.append(pessoa)
         
 for dado in pessoas:
     idades.append(dado.idade)
@@ -37,7 +35,6 @@ for dado in pessoas:
         feminino += 1
     else:
         masculino += 1
-
 
 
 def main() -> None:
@@ -49,7 +46,7 @@ def menu_iniciar() -> None:
     print('========= Projeto Pessoal ===========')
     print('=====================================')
 
-    print('Selecione uma opção no menu: ')
+    print('Selecione uma opção no menu:')
     print('1 - Listar Pessoas')
     print('2 - Média dos dados')
     print('3 - Mediana dos dados')
@@ -71,15 +68,23 @@ def menu_iniciar() -> None:
     elif opcao == 5:
         menu_desvios()
     elif opcao == 6:
-        print('Saindo do programa..')
+        print('Saindo do programa...')
         sleep(2)
         exit(0)
     else:
         print('Opção inválida')
-        sleep(2)
-        menu_iniciar()
+        countdown(int(2))
 
-def listar_pessoas():
+def countdown(t: int) -> None:
+    while t:
+        mins, secs = divmod(t, 60)
+        timer = '{:02d}:{:02d}'.format(mins, secs)
+        print(timer, end="\r")
+        time.sleep(1)
+        t -= 1
+    menu_iniciar()
+
+def listar_pessoas() -> None:
     if len(pessoas) > 0:
         print('Listagem de Pessoas')
 
@@ -89,8 +94,8 @@ def listar_pessoas():
             sleep(1)
     else:
         print('Não existem dados cadastrados.')
-    sleep(2)
-    menu_iniciar()
+    countdown(int(2))
+
 
 def menu_media():
     print('=====================================')
@@ -102,7 +107,7 @@ def menu_media():
     print('1 - Média de Idades')
     print('2 - Média de Altura')
 
-    opcao: int = int(input())
+    opcao = int(input())
 
     if opcao == 1:
         media(idades)
@@ -110,17 +115,17 @@ def menu_media():
         media(alturas)
     else:
         print('Opção inválida')
-        sleep(2)
-        menu_iniciar()
+        countdown(2)
+
 
 def media(dados):
     med = sum(dados) / len(dados)
-    if dado.idade in dados:
+    if "idade" in dados:
         print(f"A média de idades da lista é: {med:.2f}")
     else:
         print(f"A média de altura em CM da lista é: {med:.2f}")
-    sleep(2)
-    menu_iniciar()
+    countdown(2)
+
 
 def menu_mediana():
     print('=====================================')
@@ -132,7 +137,7 @@ def menu_mediana():
     print('1 - Mediana de Idades')
     print('2 - Mediana de Altura')
 
-    opcao: int = int(input())
+    opcao = int(input())
 
     if opcao == 1:
         mediana(idades)
@@ -140,8 +145,8 @@ def menu_mediana():
         mediana(alturas)
     else:
         print('Opção inválida')
-        sleep(2)
-        menu_iniciar()
+        countdown(2)
+
 
 def mediana(dados):
     lista_ordenada = sorted(dados)
@@ -150,16 +155,12 @@ def mediana(dados):
 
     if tamanho_lista % 2 == 0:
         median = ((lista_ordenada[indice_central - 1]) + lista_ordenada[indice_central]) / 2
-        print(f"A média de idades da lista é: {median:.2f}")
-    elif tamanho_lista % 2 != 0:
-        median = lista_ordenada[indice_central]
-        print(f"A média de idades da lista é: {median:.2f}")
+        print(f"A mediana da lista é: {median:.2f}")
     else:
-        print('Opção inválida')
-        sleep(2)
-        menu_iniciar()
-    sleep(2)
-    menu_iniciar()
+        median = lista_ordenada[indice_central]
+        print(f"A mediana da lista é: {median:.2f}")
+    countdown(int(2))
+
 
 def menu_moda():
     print('=====================================')
@@ -171,7 +172,7 @@ def menu_moda():
     print('1 - Moda da Idade')
     print('2 - Moda da Altura')
 
-    opcao: int = int(input())
+    opcao = int(input())
 
     if opcao == 1:
         moda(idades)
@@ -179,8 +180,8 @@ def menu_moda():
         moda(alturas)
     else:
         print('Opção inválida')
-        sleep(2)
-        menu_iniciar()
+        countdown(int(2))
+
 
 def moda(dados):
     frequencias = {}
@@ -198,16 +199,15 @@ def moda(dados):
         if frequencia > frequencias_max:
             moda = item
             frequencias_max = frequencia
+
     if dado.idade in dados:
         print(f'A moda das idades é: {moda} anos')
     elif dado.altura in dados:
         print(f'A moda das alturas é: {moda}cm')
     else:
         print('Opção inválida')
-        sleep(2)
-        menu_iniciar()
-    sleep(2)
-    menu_iniciar()
+    countdown(int(2))
+
 
 def menu_desvios():
     print('=====================================')
@@ -219,7 +219,7 @@ def menu_desvios():
     print('1 - Desvio padrão da Idade')
     print('2 - Desvio padrão da Altura')
 
-    opcao: int = int(input())
+    opcao = int(input())
 
     if opcao == 1:
         desvio_dados(idades)
@@ -227,9 +227,7 @@ def menu_desvios():
         desvio_dados(alturas)
     else:
         print('Opção inválida')
-        sleep(2)
-        menu_iniciar()
-    
+        countdown(2)
 
 def desvio_dados(dados):
     desvio_medio = []
@@ -245,16 +243,8 @@ def desvio_dados(dados):
 
     raiz_quadrada = math.sqrt(soma_desvios)
 
-    if Pessoa.idade in dados:
-        print(f'O desvio padrão das idades é: {raiz_quadrada:.2f}')
-    elif Pessoa.altura in dados:
-        print(f'O desvio padrão das altura é: {raiz_quadrada:.2f} ')
-    else:
-        print('Opção inválida')
-        sleep(2)
-        menu_iniciar()
-    sleep(2)
-    menu_iniciar()
+    print(f'O desvio padrão é: {raiz_quadrada:.2f}')
+    countdown(2)
 
 if __name__ == '__main__':
     main()
