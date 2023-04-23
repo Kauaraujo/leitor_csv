@@ -69,7 +69,7 @@ def menu_iniciar() -> None:
     elif opcao == 4:
         menu_moda()
     elif opcao == 5:
-        desvio_dados()
+        menu_desvios()
     elif opcao == 6:
         print('Saindo do programa..')
         sleep(2)
@@ -151,9 +151,15 @@ def mediana(dados):
     if tamanho_lista % 2 == 0:
         median = ((lista_ordenada[indice_central - 1]) + lista_ordenada[indice_central]) / 2
         print(f"A média de idades da lista é: {median:.2f}")
-    else:
+    elif tamanho_lista % 2 != 0:
         median = lista_ordenada[indice_central]
         print(f"A média de idades da lista é: {median:.2f}")
+    else:
+        print('Opção inválida')
+        sleep(2)
+        menu_iniciar()
+    sleep(2)
+    menu_iniciar()
 
 def menu_moda():
     print('=====================================')
@@ -194,25 +200,61 @@ def moda(dados):
             frequencias_max = frequencia
     if dado.idade in dados:
         print(f'A moda das idades é: {moda} anos')
-    else:
+    elif dado.altura in dados:
         print(f'A moda das alturas é: {moda}cm')
+    else:
+        print('Opção inválida')
+        sleep(2)
+        menu_iniciar()
+    sleep(2)
+    menu_iniciar()
 
-def desvio_dados(lista):
-    desvio_medio = []
-    media = sum(lista) / len(lista)
+def menu_desvios():
+    print('=====================================')
+    print('========= LEITOR DE .CSV ============')
+    print('========= Projeto Pessoal ===========')
+    print('=====================================')
+
+    print('Selecione uma opção no menu: ')
+    print('1 - Desvio padrão da Idade')
+    print('2 - Desvio padrão da Altura')
+
+    opcao: int = int(input())
+
+    if opcao == 1:
+        desvio_dados(idades)
+    elif opcao == 2:
+        desvio_dados(alturas)
+    else:
+        print('Opção inválida')
+        sleep(2)
+        menu_iniciar()
     
-    for num in lista:
-        dado = num - media
-        desvio_medio.append(dado)
+
+def desvio_dados(dados):
+    desvio_medio = []
+    media = sum(dados) / len(dados)
+    
+    for dado in dados:
+        num = dado - media
+        desvio_medio.append(num)
     
     quadrado = [num ** 2 for num in desvio_medio]
 
-    soma_desvios = (sum(quadrado) / len(lista)) - 1
+    soma_desvios = (sum(quadrado) / len(dados)) - 1
 
     raiz_quadrada = math.sqrt(soma_desvios)
 
-    return raiz_quadrada
-
+    if Pessoa.idade in dados:
+        print(f'O desvio padrão das idades é: {raiz_quadrada:.2f}')
+    elif Pessoa.altura in dados:
+        print(f'O desvio padrão das altura é: {raiz_quadrada:.2f} ')
+    else:
+        print('Opção inválida')
+        sleep(2)
+        menu_iniciar()
+    sleep(2)
+    menu_iniciar()
 
 if __name__ == '__main__':
     main()
