@@ -52,7 +52,8 @@ def menu_iniciar() -> None:
     print('3 - Mediana dos dados')
     print('4 - Moda dos dados')
     print('5 - Desvio padrão dos dados')
-    print('6 - Sair do sistema')
+    print('6 - Buscar por Id')
+    print('7 - Sair do sistema')
     sleep(1)
 
     opcao: int = int(input())
@@ -68,6 +69,8 @@ def menu_iniciar() -> None:
     elif opcao == 5:
         menu_desvios()
     elif opcao == 6:
+        menu_id()
+    elif opcao == 7:
         print('Saindo do programa...')
         sleep(2)
         exit(0)
@@ -245,6 +248,23 @@ def desvio_dados(dados):
 
     print(f'O desvio padrão é: {raiz_quadrada:.2f}')
     countdown(2)
+
+
+def menu_id():
+    
+    num = int(input("Informe o ID que deseja consultar:"))
+    buscar_id(num)
+
+def buscar_id(numero: int) -> Pessoa:
+    id: Pessoa = None
+
+    if len(pessoas) > 0:
+            for pessoa in pessoas:
+                if pessoa.numero == numero:
+                    id = pessoa
+    print(id)
+    countdown(3)
+    menu_iniciar()
 
 if __name__ == '__main__':
     main()
